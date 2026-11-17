@@ -74,9 +74,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:radial-gradient(circ
 .scratch-canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:pointer}
 .video-carousel{display:flex;gap:14px;width:100%;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 5px;touch-action:pan-x;scrollbar-width:none}
 .video-carousel::-webkit-scrollbar{display:none}
-.video-card{flex:0 0 86%;scroll-snap-align:center;background:rgba(74,7,21,.8);border:1px solid rgba(255,143,163,.3);border-radius:16px;padding:10px;box-shadow:0 12px 30px rgba(0,0,0,.6)}
-.video-wrapper-blur{position:relative;width:100%;height:320px;max-height:48vh;border-radius:12px;overflow:hidden;background:#000}
-.video-wrapper-blur video{width:100%;height:100%;object-fit:cover;filter:blur(14px) brightness(.7);transition:filter 1s ease}
+.video-card{flex:0 0 94%;scroll-snap-align:center;background:rgba(74,7,21,.8);border:1px solid rgba(255,143,163,.3);border-radius:16px;padding:10px;box-shadow:0 12px 30px rgba(0,0,0,.6)}
+.video-wrapper-blur{position:relative;width:100%;aspect-ratio:16/9;max-height:48vh;border-radius:12px;overflow:hidden;background:#000}
+.video-wrapper-blur video{width:100%;height:100%;object-fit:contain;filter:blur(14px) brightness(.7);transition:filter 1s ease}
 .video-wrapper-blur.revealed video{filter:none}
 .blur-overlay-btn{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(22,3,6,.4);transition:opacity .5s ease;cursor:pointer;z-index:5}
 .blur-overlay-btn.hidden{opacity:0;pointer-events:none}
@@ -467,8 +467,9 @@ const allStoryVideos=document.querySelectorAll('.story-video');
 function revealAndPlay(i){
   vib(30);
   allStoryVideos.forEach((v,k)=>{
-    if(k!==i){v.pause();v.controls=false;$('vwrap-'+k).classList.remove('revealed');document.querySelector('#vwrap-'+k+' .blur-overlay-btn').classList.remove('hidden')}
-  });
+  const fit=()=>{if(v.videoWidth)$('vwrap-'+k).style.aspectRatio=v.videoWidth+'/'+v.videoHeight};
+  v.addEventListener('loadedmetadata',fit);fit();
+});
   const wrap=$('vwrap-'+i),vid=wrap.querySelector('video');
   wrap.classList.add('revealed');wrap.querySelector('.blur-overlay-btn').classList.add('hidden');
   vid.controls=true;vid.play().catch(()=>{});
