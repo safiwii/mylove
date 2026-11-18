@@ -471,8 +471,6 @@ const car=document.querySelector('.video-carousel'),vd=document.createElement('d
 vd.className='vdots';vd.innerHTML='<i class="on"></i><i></i><i></i>';car.after(vd);
 car.addEventListener('scroll',()=>{const k=Math.round(car.scrollLeft/(car.scrollWidth/3));[...vd.children].forEach((d,j)=>d.classList.toggle('on',j===k))},{passive:true});
 const allStoryVideos=document.querySelectorAll('.story-video');
-function revealAndPlay(i){
-const allStoryVideos=document.querySelectorAll('.story-video');
 allStoryVideos.forEach((v,k)=>{
   const fit=()=>{if(v.videoWidth)$('vwrap-'+k).style.aspectRatio=v.videoWidth+'/'+v.videoHeight};
   v.addEventListener('loadedmetadata',fit);fit();
@@ -485,7 +483,7 @@ function revealAndPlay(i){
   const wrap=$('vwrap-'+i),vid=wrap.querySelector('video');
   wrap.classList.add('revealed');wrap.querySelector('.blur-overlay-btn').classList.add('hidden');
   vid.controls=true;vid.play().catch(()=>{});
- }
+}
 allStoryVideos.forEach(v=>{
   v.addEventListener('play',()=>fadeAudio(.05));
   v.addEventListener('pause',restoreBg);
